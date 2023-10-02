@@ -70,3 +70,42 @@ class DataProcessor:
             for partition in ['train', 'dev', 'test']:
                 folder_path = os.path.join(self.output_folder, language, partition)
                 os.makedirs(folder_path, exist_ok=True)
+                
+                for jsonl_file in self.jsonl_files:
+            language = None
+            for lang in languages:
+                if lang in jsonl_file:
+                    language = lang
+                    break
+
+            if language:
+                with open(jsonl_file, 'r', encoding='utf-8') as file:
+                    data = [json.loads(line) for line in file]
+
+                partitioned_data = {'train': [], 'dev': [], 'test': []}
+                for item in data:
+                    partition = item['partition']
+                    partitioned_data[partition].append(item)
+
+                for partition, partition_data in partitioned_data.items():
+                    output_file = os.path.join(self.output_folder, language, partition, os.path.basename(jsonl_file))
+                    with open(output_file, 'w', encoding='utf-8') as output:
+                        for item in partition_data:
+                            json.dump(item, output, ensure_ascii=False)
+                            output.write('\n')
+
+        print("Data categorization and saving completed.")
+
+    def translate_data(self):
+        print("Processing data...")
+        input_folder = os.path.join(self.parent_folder, 'Cat1', 'data')
+        pivot_file = os.path.join(self.jsonl_folder, 'en-US.jsonl')
+        partition_to_extract = 'train'
+
+        en_us_translations = {}
+        with jsonlines.open(pivot_file, 'r') as reader:
+            for item in reader:
+                if item['partition'] == partition_to_extract:
+                    en_us_translations[item['id']] = item['utt']
+
+        
