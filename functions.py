@@ -72,7 +72,7 @@ class DataProcessor:
                 os.makedirs(folder_path, exist_ok=True)
                 
                 for jsonl_file in self.jsonl_files:
-            language = None
+                   language = None
             for lang in languages:
                 if lang in jsonl_file:
                     language = lang
