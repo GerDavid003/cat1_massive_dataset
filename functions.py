@@ -9,7 +9,7 @@ import pprint
 
 class DataProcessor:
     
-    def __init__(self, parent_folder):
+    def __init__(sel, parent_folder):
         print("Processing data...")
         self.parent_folder = parent_folder
         self.jsonl_folder = os.path.join(parent_folder, 'Cat1', 'data')
