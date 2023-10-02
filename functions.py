@@ -107,4 +107,4 @@ class DataProcessor:
             for item in reader:
                 if item['partition'] == partition_to_extract:
                     en_us_translations[item['id']] = item['utt']
-
+                    
