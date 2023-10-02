@@ -29,3 +29,14 @@ while [[ $# -gt 0 ]]; do
         ;;
     esac
 done
+
+# Run the specified command based on the flags
+if [ "$PROCESS" = true ]; then
+    $COMMAND_TO_RUN --process --parent_folder "$PARENT_FOLDER"
+fi
+if [ "$CATEGORIZE" = true ]; then
+    $COMMAND_TO_RUN --categorize --parent_folder "$PARENT_FOLDER"
+fi
+if [ "$TRANSLATE" = true ]; then
+    $COMMAND_TO_RUN --translate --parent_folder "$PARENT_FOLDER"
+fi
