@@ -70,9 +70,11 @@ class DataProcessor:
             for partition in ['train', 'dev', 'test']:
                 folder_path = os.path.join(self.output_folder, language, partition)
                 os.makedirs(folder_path, exist_ok=True)
+                for jsonl_file in self.jsonl_files:
+                 language = None
 
         for jsonl_file in self.jsonl_files:
-            language = None
+            language = None 
             for lang in languages:
                 if lang in jsonl_file:
                     language = lang
