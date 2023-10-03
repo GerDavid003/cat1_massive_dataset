@@ -34,6 +34,7 @@ git@github.com:GerDavid003/cat1_massive_dataset.git
    virtualenv venv
    ```
 3. Import the MASSIVE dataset to the dataset folder the MASSIVE dataset can be found in https://github.com/alexa/massive.
+
 4. Install all the required dependencies needed to run the project
    ```command line
    python -r pip install requirements.txt
