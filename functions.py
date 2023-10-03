@@ -70,9 +70,11 @@ class DataProcessor:
             for partition in ['train', 'dev', 'test']:
                 folder_path = os.path.join(self.output_folder, language, partition)
                 os.makedirs(folder_path, exist_ok=True)
-                
                 for jsonl_file in self.jsonl_files:
                  language = None
+
+        for jsonl_file in self.jsonl_files:
+            language = None 
             for lang in languages:
                 if lang in jsonl_file:
                     language = lang
@@ -108,4 +110,26 @@ class DataProcessor:
                 if item['partition'] == partition_to_extract:
                     en_us_translations[item['id']] = item['utt']
 
-        
+        translations = {}
+
+        for jsonl_file in self.jsonl_files:
+            lang = os.path.splitext(os.path.basename(jsonl_file))[0]
+            translations[lang] = []
+
+            with jsonlines.open(os.path.join(self.jsonl_folder, jsonl_file), 'r') as reader:
+                for item in reader:
+                    if item['partition'] == partition_to_extract:
+                        translation_item = {
+                            'id': item['id'],
+                            f'{lang}_utt': item['utt'],
+                            'English-Translation': en_us_translations.get(item['id'], 'Translation not found in English'),
+                        }
+                        translations[lang].append(translation_item)
+
+        output_file = os.path.join(self.output_folder, 'en-xx.json')
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
+        with open(output_file, 'w', encoding='utf-8') as json_file:
+         json.dump(translations, json_file, indent=4, sort_keys=True, separators=(',', ': '))
+
+    
+        print(f"Translations saved to '{output_file}'.")
